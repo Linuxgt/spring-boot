@@ -1,6 +1,5 @@
 [[getting-started]]
-== Getting started
-
+== Getting Started
 To use the Spring Boot Maven Plugin, include the appropriate XML in the `plugins` section of your `pom.xml`, as shown in the following example:
 
 [source,xml,indent=0,subs="verbatim,attributes"]
@@ -15,7 +14,6 @@ To use the Spring Boot Maven Plugin, include the appropriate XML in the `plugins
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>{gradle-project-version}</version>
 				</plugin>
 			</plugins>
 		</build>

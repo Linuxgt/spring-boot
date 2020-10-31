@@ -19,6 +19,7 @@ package org.springframework.boot.autoconfigure.web.reactive;
 import java.util.Collections;
 import java.util.Map;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -53,16 +54,17 @@ public class HttpHandlerAutoConfiguration {
 	@Configuration(proxyBeanMethods = false)
 	public static class AnnotationConfig {
 
-		private ApplicationContext applicationContext;
+		private final ApplicationContext applicationContext;
 
 		public AnnotationConfig(ApplicationContext applicationContext) {
 			this.applicationContext = applicationContext;
 		}
 
 		@Bean
-		public HttpHandler httpHandler(WebFluxProperties properties) {
+		public HttpHandler httpHandler(ObjectProvider<WebFluxProperties> propsProvider) {
 			HttpHandler httpHandler = WebHttpHandlerBuilder.applicationContext(this.applicationContext).build();
-			if (StringUtils.hasText(properties.getBasePath())) {
+			WebFluxProperties properties = propsProvider.getIfAvailable();
+			if (properties != null && StringUtils.hasText(properties.getBasePath())) {
 				Map<String, HttpHandler> handlersMap = Collections.singletonMap(properties.getBasePath(), httpHandler);
 				return new ContextPathCompositeHandler(handlersMap);
 			}
